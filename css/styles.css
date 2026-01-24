@@ -1,35 +1,40 @@
 /* PP Neue Montreal Font Faces */
 @font-face {
-    font-family: 'PP Neue Montreal';
-    src: url('../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Thin.otf') format('opentype');
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Thin.otf")
+        format("opentype");
     font-weight: 100;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'PP Neue Montreal';
-    src: url('../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Book.otf') format('opentype');
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Book.otf")
+        format("opentype");
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'PP Neue Montreal';
-    src: url('../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Medium.otf') format('opentype');
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Medium.otf")
+        format("opentype");
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'PP Neue Montreal';
-    src: url('../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Bold.otf') format('opentype');
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Bold.otf")
+        format("opentype");
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'PP Neue Montreal';
-    src: url('../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Italic.otf') format('opentype');
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Italic.otf")
+        format("opentype");
     font-weight: 400;
     font-style: italic;
 }
@@ -43,7 +48,8 @@
     --color-accent-light: #4a8a9e;
     --color-border: #e0e0de;
 
-    --font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-family:
+        "PP Neue Montreal", -apple-system, BlinkMacSystemFont, sans-serif;
 
     --space-xs: 0.5rem;
     --space-sm: 1rem;
@@ -56,7 +62,9 @@
 }
 
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -232,6 +240,25 @@ p {
 
 .hero__cta:hover {
     opacity: 0.8;
+}
+
+.hero__buttons {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.hero__cta--secondary {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+}
+
+.hero__cta--secondary:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    opacity: 1;
 }
 
 /* Listen Page */
@@ -469,7 +496,7 @@ p {
 }
 
 .player__progress-bar::after {
-    content: '';
+    content: "";
     position: absolute;
     right: -4px;
     top: 50%;
@@ -576,6 +603,82 @@ p {
     .player__track-number {
         width: 30px;
     }
+}
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.lightbox__content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.lightbox.is-open .lightbox__content {
+    transform: scale(1);
+}
+
+.lightbox__image {
+    max-width: 100%;
+    max-height: 90vh;
+    display: block;
+}
+
+.lightbox__close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 48px;
+    height: 48px;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    z-index: 1;
+}
+
+.lightbox__close:hover {
+    opacity: 1;
+}
+
+.lightbox__close svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Clickable artwork */
+[data-lightbox] {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+[data-lightbox]:hover {
+    opacity: 0.9;
 }
 
 /* Utility Classes */
