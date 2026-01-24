@@ -1,0 +1,5 @@
+# WAV files (too large for source control)
+**/wav/
+
+# macOS
+.DS_Store
