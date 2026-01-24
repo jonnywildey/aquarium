@@ -18,9 +18,10 @@ class Lightbox {
     lightbox.className = "lightbox";
     lightbox.innerHTML = `
       <div class="lightbox__backdrop"></div>
-      <div class="lightbox__content">
+      <figure class="lightbox__content">
         <img src="" alt="Album artwork" class="lightbox__image">
-      </div>
+        <figcaption class="lightbox__caption">Artwork by Shaun Ellis</figcaption>
+      </figure>
       <button class="lightbox__close" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"/>
