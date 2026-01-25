@@ -148,3 +148,14 @@
         padding: var(--space-sm);
     }
 }
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .license__section--highlight {
+        background: rgba(90, 155, 176, 0.1);
+    }
+
+    .license__cc img {
+        filter: invert(1);
+    }
+}

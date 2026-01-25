@@ -171,3 +171,22 @@
         font-size: 0.75rem;
     }
 }
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .creators__track-list .player__track:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .creators__track-list .player__track.is-active {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .player__track-category {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .player__track-download:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
