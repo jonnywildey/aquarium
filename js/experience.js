@@ -8,15 +8,35 @@ class AlbumExperience {
     this.audio = new Audio();
     this.tracks = [
       { number: 1, title: "Shore", file: "01 Alphabets Heaven - Shore.mp3" },
-      { number: 2, title: "Torrent", file: "02 Alphabets Heaven - Torrent.mp3" },
-      { number: 3, title: "Fathoms", file: "03 Alphabets Heaven - Fathoms.mp3" },
-      { number: 4, title: "Submerged", file: "04 Alphabets Heaben - Submerged.mp3" },
-      { number: 5, title: "Riverbed", file: "05 Alphabets Heaven - Riverbed.mp3" },
+      {
+        number: 2,
+        title: "Torrent",
+        file: "02 Alphabets Heaven - Torrent.mp3",
+      },
+      {
+        number: 3,
+        title: "Fathoms",
+        file: "03 Alphabets Heaven - Fathoms.mp3",
+      },
+      {
+        number: 4,
+        title: "Submerged",
+        file: "04 Alphabets Heaben - Submerged.mp3",
+      },
+      {
+        number: 5,
+        title: "Riverbed",
+        file: "05 Alphabets Heaven - Riverbed.mp3",
+      },
       { number: 6, title: "Clouds", file: "06 Alphabets Heaven - Clouds.mp3" },
-      { number: 7, title: "Saragossa", file: "07 Alphabets Heaven - Saragossa.mp3" },
+      {
+        number: 7,
+        title: "Saragossa",
+        file: "07 Alphabets Heaven - Saragossa.mp3",
+      },
       { number: 8, title: "Ocean", file: "08 Alphabets Heaven - Ocean.mp3" },
       { number: 9, title: "Cenote", file: "09 Alphabets Heaven - Cenote.mp3" },
-      { number: 10, title: "Murky", file: "10 Alphabets Heaven - Murk.mp3" },
+      { number: 10, title: "Murk", file: "10 Alphabets Heaven - Murky.mp3" },
     ];
 
     this.textures = [
@@ -66,7 +86,10 @@ class AlbumExperience {
     // Fisher-Yates shuffle for random texture order
     for (let i = this.textures.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this.textures[i], this.textures[j]] = [this.textures[j], this.textures[i]];
+      [this.textures[i], this.textures[j]] = [
+        this.textures[j],
+        this.textures[i],
+      ];
     }
   }
 
@@ -158,11 +181,14 @@ class AlbumExperience {
   }
 
   nextTexture() {
-    this.currentTextureIndex = (this.currentTextureIndex + 1) % this.textures.length;
+    this.currentTextureIndex =
+      (this.currentTextureIndex + 1) % this.textures.length;
     const texturePath = `assets/images/albumart/Texture Pack/${this.textures[this.currentTextureIndex]}`;
 
     // Determine which bg is active and which is inactive
-    const activeBg = this.bg1.classList.contains("experience__bg--active") ? this.bg1 : this.bg2;
+    const activeBg = this.bg1.classList.contains("experience__bg--active")
+      ? this.bg1
+      : this.bg2;
     const inactiveBg = activeBg === this.bg1 ? this.bg2 : this.bg1;
 
     // Set new image on inactive bg

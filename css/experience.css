@@ -112,6 +112,25 @@ body {
 .experience__header {
     display: flex;
     justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.experience__license {
+    position: absolute;
+    left: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.experience__license:hover {
+    opacity: 1;
 }
 
 .experience__album {
