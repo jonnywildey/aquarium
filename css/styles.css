@@ -520,7 +520,10 @@ p {
 .player__progress {
     flex: 1;
     height: 4px;
-    background: var(--color-border);
+    padding: 20px 0;
+    box-sizing: content-box;
+    background-color: var(--color-border);
+    background-clip: content-box;
     cursor: pointer;
     position: relative;
 }
