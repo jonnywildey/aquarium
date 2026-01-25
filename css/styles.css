@@ -77,6 +77,12 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+@media (max-width: 900px) {
+    html {
+        font-size: 12px;
+    }
+}
+
 body {
     font-family: var(--font-family);
     font-weight: 400;
