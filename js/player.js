@@ -36,7 +36,7 @@ class AquariumPlayer {
       },
       { number: 8, title: "Ocean", file: "08 Alphabets Heaven - Ocean.mp3" },
       { number: 9, title: "Cenote", file: "09 Alphabets Heaven - Cenote.mp3" },
-      { number: 10, title: "Murky", file: "10 Alphabets Heaven - Murk.mp3" },
+      { number: 10, title: "Murk", file: "10 Alphabets Heaven - Murky.mp3" },
     ];
     this.currentTrackIndex = 0;
     this.isPlaying = false;

@@ -1,0 +1,340 @@
+/* Experience Page - Immersive Album Listening */
+
+@font-face {
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Thin.otf") format("opentype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Book.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "PP Neue Montreal";
+    src: url("../assets/fonts/PPNeueMontrealOTF/PPNeueMontreal-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+:root {
+    --font-family: "PP Neue Montreal", -apple-system, BlinkMacSystemFont, sans-serif;
+    --transition-slow: 8s;
+    --transition-ui: 0.4s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-family);
+    background: #000;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Main container */
+.experience {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Background layers */
+.experience__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity var(--transition-slow) ease-in-out;
+    transform: scale(1.05);
+    animation: subtle-zoom 30s ease-in-out infinite alternate;
+}
+
+.experience__bg--active {
+    opacity: 1;
+}
+
+@keyframes subtle-zoom {
+    0% {
+        transform: scale(1.0);
+    }
+    100% {
+        transform: scale(1.08);
+    }
+}
+
+/* Vignette overlay */
+.experience__vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+}
+
+/* UI Layer */
+.experience__ui {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity var(--transition-ui) ease;
+    z-index: 10;
+}
+
+.experience__ui.is-visible {
+    opacity: 1;
+}
+
+.experience__ui.is-started .experience__start {
+    display: none;
+}
+
+/* Header */
+.experience__header {
+    display: flex;
+    justify-content: center;
+}
+
+.experience__album {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* Start button */
+.experience__start {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.experience__start:hover {
+    opacity: 0.8;
+}
+
+.experience__start svg {
+    width: 80px;
+    height: 80px;
+    padding: 1.5rem;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
+    transition: border-color 0.3s ease;
+}
+
+.experience__start:hover svg {
+    border-color: rgba(255,255,255,0.8);
+}
+
+.experience__start span {
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Footer */
+.experience__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.experience__track-info {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.experience__track-number {
+    font-size: 0.875rem;
+    font-weight: 100;
+    opacity: 0.5;
+}
+
+.experience__track-title {
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+/* Progress */
+.experience__progress-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+.experience__progress {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    position: relative;
+}
+
+.experience__progress-bar {
+    height: 100%;
+    background: rgba(255,255,255,0.8);
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.experience__time {
+    font-size: 0.75rem;
+    font-weight: 100;
+    opacity: 0.6;
+    min-width: 90px;
+    text-align: right;
+}
+
+.experience__time-sep {
+    margin: 0 0.25rem;
+}
+
+/* Controls */
+.experience__controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.experience__btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.5rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.experience__btn:hover {
+    opacity: 1;
+}
+
+.experience__btn svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.experience__btn--play {
+    width: 56px;
+    height: 56px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.experience__btn--play:hover {
+    border-color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.1);
+}
+
+.experience__btn--play svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 2px;
+}
+
+/* Exit button */
+.experience__exit {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    text-decoration: none;
+}
+
+.experience__exit:hover {
+    opacity: 1;
+}
+
+.experience__exit svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .experience__ui {
+        padding: 1.5rem;
+    }
+
+    .experience__track-title {
+        font-size: 1.25rem;
+    }
+
+    .experience__start svg {
+        width: 60px;
+        height: 60px;
+    }
+
+    .experience__progress-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .experience__progress {
+        width: 100%;
+    }
+
+    .experience__time {
+        text-align: center;
+    }
+}
+
+/* Cursor hide when idle */
+.experience.is-idle {
+    cursor: none;
+}
+
+.experience.is-idle .experience__ui {
+    opacity: 0;
+    pointer-events: none;
+}

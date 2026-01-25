@@ -259,7 +259,6 @@ p {
     display: flex;
     gap: var(--space-sm);
     flex-wrap: wrap;
-    justify-content: space-between;
 }
 
 .hero__cta--secondary {
@@ -296,6 +295,10 @@ p {
 
 .listen__figure {
     margin-bottom: var(--space-md);
+}
+
+.listen__figure .artwork-credit {
+    margin-top: 0.25rem;
 }
 
 .listen__artwork {
@@ -631,7 +634,9 @@ p {
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
 }
 
 .lightbox.is-open {
