@@ -234,7 +234,7 @@ p {
 }
 
 .artwork-credit {
-    font-size: 0.75rem;
+    font-size: 1rem;
     color: var(--color-text-secondary);
     margin-top: var(--space-xs);
     font-weight: 100;
