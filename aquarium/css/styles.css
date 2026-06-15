@@ -220,6 +220,18 @@ p {
     width: 100%;
 }
 
+.license__description {
+    margin-top: 2rem;
+    font-style: italic;
+    color: var(--color-accent);
+}
+
+.license_cta {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 .hero__figure {
     display: flex;
     flex-direction: column;
@@ -294,7 +306,11 @@ p {
 /* Listen Page */
 .listen {
     min-height: 100vh;
-    padding: calc(var(--space-xl) + 60px) var(--space-md) var(--space-lg);
+    padding: calc(var(--space-xl)) var(--space-md) calc(var(--space-lg) + 100px);
+}
+
+.composition {
+    margin-top: --space-md;
 }
 
 .listen__content {
@@ -352,6 +368,10 @@ p {
     transition: all 0.2s ease;
     text-align: center;
     width: 100%;
+}
+
+.listen__download + .listen__download {
+    margin-top: var(--space-sm);
 }
 
 .listen__download:hover {
