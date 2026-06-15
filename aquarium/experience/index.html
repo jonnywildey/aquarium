@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Experience — Alphabets Heaven — Aquarium</title>
+        <link rel="stylesheet" href="../css/experience.css" />
+    </head>
+    <body>
+        <div class="experience">
+            <!-- Background layers for cross-fade -->
+            <div class="experience__bg experience__bg--active" id="bg-1"></div>
+            <div class="experience__bg" id="bg-2"></div>
+
+            <!-- Subtle vignette overlay -->
+            <div class="experience__vignette"></div>
+
+            <!-- Minimal UI - appears on interaction -->
+            <div class="experience__ui" id="ui">
+                <!-- Top: Track info -->
+                <div class="experience__header">
+                    <div class="experience__album">
+                        Alphabets Heaven — Aquarium
+                    </div>
+                </div>
+
+                <!-- Center: Play button (shown before starting) -->
+                <button class="experience__start" id="start-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                    <span>Begin Experience</span>
+                </button>
+
+                <!-- Bottom: Track info and progress -->
+                <div class="experience__footer">
+                    <div class="experience__track-info">
+                        <span class="experience__track-number" id="track-number"
+                            >01</span
+                        >
+                        <span class="experience__track-title" id="track-title"
+                            >Shore</span
+                        >
+                    </div>
+                    <div class="experience__progress-container">
+                        <div class="experience__progress" id="progress">
+                            <div
+                                class="experience__progress-bar"
+                                id="progress-bar"
+                            ></div>
+                        </div>
+                        <div class="experience__time">
+                            <span id="current-time">0:00</span>
+                            <span class="experience__time-sep">/</span>
+                            <span id="duration">0:00</span>
+                        </div>
+                    </div>
+                    <div class="experience__controls">
+                        <button
+                            class="experience__btn"
+                            id="prev-btn"
+                            aria-label="Previous"
+                        >
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="19,20 9,12 19,4" />
+                                <rect x="5" y="4" width="2" height="16" />
+                            </svg>
+                        </button>
+                        <button
+                            class="experience__btn experience__btn--play"
+                            id="play-btn"
+                            aria-label="Play/Pause"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="icon-play"
+                            >
+                                <polygon points="5,3 19,12 5,21" />
+                            </svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="icon-pause"
+                                style="display: none"
+                            >
+                                <rect x="6" y="4" width="4" height="16" />
+                                <rect x="14" y="4" width="4" height="16" />
+                            </svg>
+                        </button>
+                        <button
+                            class="experience__btn"
+                            id="next-btn"
+                            aria-label="Next"
+                        >
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5,4 15,12 5,20" />
+                                <rect x="17" y="4" width="2" height="16" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Exit button -->
+                <a href="../" class="experience__exit" aria-label="Exit">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <script src="../js/experience.js"></script>
+    </body>
+</html>
