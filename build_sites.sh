@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+TMPDIR=$(mktemp -d)
+trap 'rm -rf "$TMPDIR"' EXIT
+
+git clone --depth 1 --branch main https://github.com/jonnywildey/permute "$TMPDIR/permute"
+
+rm -rf "./permute"
+cp -r "$TMPDIR/permute/site" permute
+
+echo "Done: permute/site copied to ./permute"
