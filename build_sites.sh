@@ -9,4 +9,11 @@ git clone --depth 1 --branch main https://github.com/jonnywildey/permute "$TMPDI
 rm -rf "./permute"
 cp -r "$TMPDIR/permute/site" permute
 
-echo "Done: permute/site copied to ./permute"
+echo "permute/site copied to ./permute"
+
+git clone --depth 1 --branch main https://github.com/jonnywildey/waveformjs "$TMPDIR/waveformjs"
+
+rm -rf "./waveformjs"
+cp -r "$TMPDIR/waveformjs/releases" releases
+
+echo "waveformhs/site copied to ./waveformjs"
