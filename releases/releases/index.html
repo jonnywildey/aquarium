@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="favicon.ico" />
+        <title>Alphabets Heaven — Releases</title>
+        <link href="style/navbar.css" rel="stylesheet" />
+        <link href="style/alphabets.css" rel="stylesheet" />
+        <style>
+            :root {
+                --panel-rgb: 10, 10, 16;
+                --accent: #484848;
+                --accent-rgb: 72, 72, 72;
+                --bg-overlay: rgba(0, 0, 0, 0);
+            }
+
+            .content-container {
+                /*background: #0c0c14;
+                min-height: 100vh;*/
+
+                background:
+                    linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+                    url("images/promo/promo8.jpg") no-repeat center / cover;
+                background-attachment: fixed;
+            }
+
+            /* ── Hub layout ── */
+
+            .releases-hub {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 48px 32px 100px;
+            }
+
+            .hub-heading {
+                text-align: center;
+                margin-bottom: 48px;
+            }
+
+            .hub-heading h1 {
+                font-size: 2em;
+                font-weight: 700;
+                color: white;
+                letter-spacing: 0.04em;
+                margin: 0 0 6px;
+            }
+
+            .hub-heading p {
+                color: rgba(255, 255, 255, 0.35);
+                font-size: 0.85em;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin: 0;
+            }
+
+            /* ── Bottom fade ── */
+
+            .bottom-fade {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 140px;
+                background: linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(0, 0, 0, 0.9)
+                );
+                pointer-events: none;
+                z-index: 10;
+            }
+
+            /* ── Filter tabs ── */
+
+            .filter-tabs {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 32px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .filter-tab {
+                background: none;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                color: rgba(255, 255, 255, 0.45);
+                padding: 6px 20px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 0.75em;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                transition:
+                    border-color 0.18s ease,
+                    color 0.18s ease,
+                    background 0.18s ease;
+                font-family: inherit;
+            }
+
+            .filter-tab:hover {
+                border-color: rgba(255, 255, 255, 0.35);
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            .filter-tab.active {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.4);
+                color: white;
+            }
+
+            /* ── Release grid ── */
+
+            .releases-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .release-card {
+                display: flex;
+                flex-direction: column;
+                background: rgba(var(--panel-rgb), 0.9);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 10px;
+                overflow: hidden;
+                text-decoration: none;
+                transition:
+                    transform 0.18s ease,
+                    border-color 0.18s ease,
+                    box-shadow 0.18s ease;
+            }
+
+            .release-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(var(--accent-rgb), 0.5);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+                text-decoration: none;
+            }
+
+            .release-artwork {
+                width: 100%;
+                aspect-ratio: 1;
+                background: rgba(255, 255, 255, 0.04);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .release-artwork img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            /* Placeholder for releases without local artwork */
+            .release-artwork-placeholder {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.04) 0%,
+                    rgba(255, 255, 255, 0.01) 100%
+                );
+                font-size: 2em;
+                color: rgba(255, 255, 255, 0.08);
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                padding: 16px;
+                text-align: center;
+            }
+
+            .release-info {
+                padding: 12px 14px 14px;
+            }
+
+            .release-title {
+                color: white;
+                font-size: 0.9em;
+                font-weight: 600;
+                line-height: 1.3;
+                margin-bottom: 3px;
+            }
+
+            .release-label {
+                color: rgba(255, 255, 255, 0.3);
+                font-size: 0.72em;
+                letter-spacing: 0.04em;
+            }
+
+            @media (max-width: 600px) {
+                .releases-hub {
+                    padding: 32px 16px 80px;
+                }
+                .releases-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 12px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="content-container">
+            <nav class="navbar navbar-static-top">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Alphabets Heaven</a></li>
+                    </ul>
+                    <div class="nav-social">
+                        <a
+                            href="http://www.soundcloud.com/alphabetsheaven"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="images/social/sc2.png" alt="SoundCloud"
+                        /></a>
+                        <a
+                            href="https://alphabetsheaven.bandcamp.com/"
+                            target="_blank"
+                            rel="noopener"
+                            ><img
+                                src="images/social/bandcamp.png"
+                                alt="Bandcamp"
+                        /></a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="releases-hub">
+                <div class="hub-heading">
+                    <h1 class="player-header-title">Alphabets Heaven</h1>
+                    <p>Music & Organica</p>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="selected">
+                        Selected
+                    </button>
+                    <button class="filter-tab" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="album-ep">
+                        Albums & EPs
+                    </button>
+                    <button class="filter-tab" data-filter="single-remix">
+                        Singles & Remixes
+                    </button>
+                    <button class="filter-tab" data-filter="other">
+                        Other
+                    </button>
+                    <button class="filter-tab" data-filter="video">
+                        Videos
+                    </button>
+                </div>
+
+                <div class="releases-grid">
+                    <!-- ── Aquarium mini site ── -->
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        data-selected
+                        href="../aquarium/index.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/aquarium/aquarium.jpg"
+                                alt="Aquarium"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Aquarium</div>
+                        </div>
+                    </a>
+                    <!-- ── Releases with vinyl player ── -->
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        data-selected
+                        href="eternal-gold-somnolence.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/eternal-gold-somnolence/eternal-gold-somnolence.jpg"
+                                alt="Eternal Gold Somnolence"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Eternal Gold Somnolence
+                            </div>
+                            <div class="release-label">WotNot Music · 2025</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        data-selected
+                        href="eternal-infraviolet.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/eternal-infraviolet/eternal-infraviolet.jpg"
+                                alt="Eternal Infraviolet Sunset"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Eternal Infraviolet Sunset
+                            </div>
+                            <div class="release-label">WotNot Music · 2025</div>
+                        </div>
+                    </a>
+                    <a
+                        class="release-card"
+                        data-type="other"
+                        data-selected
+                        href="../permute/index.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/permute/permute.png"
+                                alt="Permute"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Permute</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="cielo.html"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/cielo/cielo.jpg" alt="Cielo" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Cielo</div>
+                            <div class="release-label">WotNot Music · 2020</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        data-selected
+                        href="https://www.youtube.com/watch?v=I8722_0hYFU"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/I8722_0hYFU/hqdefault.jpg"
+                                alt="Eva"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Eva</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        data-selected
+                        href="subtitles.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/subtitles/subtitles.jpg"
+                                alt="Subtitles"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Subtitles</div>
+                            <div class="release-label">rx:tx · 2019</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="your-lifestyle.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/your-lifestyle/your-lifestyle.jpg"
+                                alt="Your Lifestyle"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Your Lifestyle</div>
+                            <div class="release-label">WotNot · 2018</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="stories.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/stories/stories.jpg"
+                                alt="Stories"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Stories</div>
+                            <div class="release-label">WotNot Music · 2017</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="wander.html"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/wander/wander.jpg" alt="Wander" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Wander</div>
+                            <div class="release-label">WotNot · 2016</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        data-selected
+                        href="warp-records.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/warp-records/warp-records.jpg"
+                                alt="Warp Records"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Warp Records</div>
+                            <div class="release-label">2015</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="lovers.html"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/lovers/lovers.jpg" alt="Lovers" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Lovers</div>
+                            <div class="release-label">2015</div>
+                        </div>
+                    </a>
+
+                    <!-- ── Other releases (link to Bandcamp) ── -->
+
+                    <a
+                        class="release-card"
+                        href="everything-stays-the-same.html"
+                        data-type="album-ep"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/everything-stays-the-same/everything-stays-the-same.jpg"
+                                alt="Everything Stays The Same"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Everything Stays The Same
+                            </div>
+                            <div class="release-label">King Deluxe · 2014</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="mountainsound.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/mountainsound/mountainsound.jpg"
+                                alt="Mountainsound"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Mountainsound</div>
+                            <div class="release-label">
+                                Cleaning Tapes · 2013
+                            </div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="siamese-burn.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/siamese-burn/siamese-burn.jpg"
+                                alt="Siamese Burn EP"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Siamese Burn EP</div>
+                            <div class="release-label">King Deluxe · 2013</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="rosewater.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/rosewater/rosewater.jpg"
+                                alt="Rosewater"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Rosewater</div>
+                            <div class="release-label">2012</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="boosh.html"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/boosh/boosh.jpg" alt="Boosh" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Boosh</div>
+                            <div class="release-label">King Deluxe · 2012</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="jays-odyssey.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/jays-odyssey/jays-odyssey.jpg"
+                                alt="Jay's Odyssey"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Jay's Odyssey</div>
+                            <div class="release-label">King Deluxe · 2011</div>
+                        </div>
+                    </a>
+
+                    <!-- ── Other ── -->
+
+                    <a
+                        class="release-card"
+                        data-type="other"
+                        data-selected
+                        href="nitely.html"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/nitely/nitely.jpg" alt="Nitely" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Nitely</div>
+                            <div class="release-label">Jonny Wildey · 2021</div>
+                        </div>
+                    </a>
+
+                    <!-- ── Live sets ── -->
+
+                    <a
+                        class="release-card"
+                        data-type="other"
+                        data-selected
+                        href="https://www.youtube.com/watch?v=1ln0FvgzxwU"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/1ln0FvgzxwU/hqdefault.jpg"
+                                alt="Boiler Room London"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Boiler Room London</div>
+                            <div class="release-label">Live Set</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="other"
+                        href="https://www.youtube.com/watch?v=5fsGEXOh_tY"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/5fsGEXOh_tY/hqdefault.jpg"
+                                alt="Jynweythek"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Jynweythek</div>
+                            <div class="release-label">Live Set</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="other"
+                        href="https://www.youtube.com/watch?v=VuMwNIb7t68"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/VuMwNIb7t68/hqdefault.jpg"
+                                alt="Screensaver"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Screensaver</div>
+                            <div class="release-label">Live Set</div>
+                        </div>
+                    </a>
+
+                    <!-- ── Singles & Remixes ── -->
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="her-body.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/her-body/her-body.jpg"
+                                alt="Her Body"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Her Body</div>
+                            <div class="release-label">2023</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        data-selected
+                        href="https://alphabetsheaven.bandcamp.com/track/slo"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/slo/slo.jpg" alt="Slo" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Slo</div>
+                            <div class="release-label">2021</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="wild-love.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/wild-love/wild-love.png"
+                                alt="Wild Love"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Wild Love</div>
+                            <div class="release-label">2019</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="https://alphabetsheaven.bandcamp.com/track/le-cygne-the-swan"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/le-cygne/le-cygne.jpg"
+                                alt="Le Cygne (The Swan)"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Le Cygne (The Swan)</div>
+                            <div class="release-label">2019</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="https://alphabetsheaven.bandcamp.com/album/dop"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/dope/dope.jpg" alt="Dopé" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Dopé</div>
+                            <div class="release-label">2018</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="https://alphabetsheaven.bandcamp.com/album/edits"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/edits/edits.jpg" alt="Edits" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Edits</div>
+                            <div class="release-label">WotNot · 2016</div>
+                        </div>
+                    </a>
+                    <!-- ── Music Videos ── -->
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        data-selected
+                        href="https://www.youtube.com/watch?v=VyjzhuWJ6JU"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/VyjzhuWJ6JU/hqdefault.jpg"
+                                alt="Birthday"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Birthday</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=UtYxHr7Ljwc"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/UtYxHr7Ljwc/hqdefault.jpg"
+                                alt="All Night"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">All Night</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=K5Tj2AwtRvw"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/K5Tj2AwtRvw/hqdefault.jpg"
+                                alt="Darma"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Darma</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=1S6UQsZedU8"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/1S6UQsZedU8/hqdefault.jpg"
+                                alt="Her Body"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Her Body</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=FqUHVSjki5c"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/FqUHVSjki5c/hqdefault.jpg"
+                                alt="sadglitterface"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">sadglitterface</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=UJJAjwy60Y0"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/UJJAjwy60Y0/hqdefault.jpg"
+                                alt="Woman (feat. Alessi's Ark)"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Woman</div>
+                            <div class="release-label">
+                                feat. Alessi's Ark · YouTube
+                            </div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=Ha6ZJngMNkI"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/Ha6ZJngMNkI/hqdefault.jpg"
+                                alt="Pride and Joy"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Pride and Joy</div>
+                            <div class="release-label">
+                                feat. Deft · YouTube
+                            </div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=_X26Hlk5WMc"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/_X26Hlk5WMc/hqdefault.jpg"
+                                alt="Whats Up"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Whats Up</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=xzFus6smlcE"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/xzFus6smlcE/hqdefault.jpg"
+                                alt="Squuaares"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Squuaares</div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://www.youtube.com/watch?v=lQf062gtJo4"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="https://img.youtube.com/vi/lQf062gtJo4/hqdefault.jpg"
+                                alt="Eternal Gold Somnolence"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Eternal Gold Somnolence
+                            </div>
+                            <div class="release-label">YouTube</div>
+                        </div>
+                    </a>
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://vimeo.com/376296128"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <div class="release-artwork-placeholder">▶</div>
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Comte</div>
+                            <div class="release-label">Vimeo</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="video"
+                        href="https://vimeo.com/41976231"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <div class="release-artwork-placeholder">▶</div>
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Deartentonine</div>
+                            <div class="release-label">Vimeo</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-fade"></div>
+        <script>
+            function applyFilter(filter) {
+                document.querySelectorAll(".release-card").forEach((card) => {
+                    const match =
+                        filter === "all" ||
+                        card.dataset.type === filter ||
+                        (filter === "selected" &&
+                            card.hasAttribute("data-selected"));
+                    card.style.display = match ? "" : "none";
+                });
+            }
+
+            document.querySelectorAll(".filter-tab").forEach((tab) => {
+                tab.addEventListener("click", () => {
+                    document
+                        .querySelectorAll(".filter-tab")
+                        .forEach((t) => t.classList.remove("active"));
+                    tab.classList.add("active");
+                    applyFilter(tab.dataset.filter);
+                });
+            });
+
+            applyFilter("selected");
+        </script>
+    </body>
+</html>

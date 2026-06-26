@@ -1,0 +1,70 @@
+.svg-wave {
+    fill: rgba(255, 255, 255, 0.88);
+    stroke-width: 0;
+}
+
+.playback-head {
+    fill: #010101;
+    cursor: grab;
+    transition:
+        fill 0.12s,
+        filter 0.12s;
+}
+
+.playback-head:hover {
+    fill: #ffe7d2;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+}
+
+.playback-head:active {
+    cursor: grabbing;
+    fill: #ffe7d2;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1));
+}
+
+.spiral-player {
+    margin: auto;
+    position: relative;
+}
+
+.svg-object {
+    margin: auto;
+    width: 100%;
+}
+
+.pausebutton,
+.playbutton {
+    fill: #010101;
+    cursor: pointer;
+    transition: fill 0.12s;
+}
+
+.pausebutton:hover,
+.playbutton:hover {
+    fill: #4d4d4d;
+}
+
+.pausebutton:active,
+.playbutton:active {
+    fill: #898989;
+}
+
+.loading .pausebutton {
+    cursor: wait;
+}
+
+/* Icons are white, always visible against the orange circle */
+.pausesymbol,
+.playsymbol {
+    fill: rgba(255, 255, 255, 0.9);
+}
+
+/* When playing: show pause bars only */
+.playbutton .playsymbol {
+    display: none;
+}
+
+/* When paused: show play triangle only */
+.pausebutton .pausesymbol {
+    display: none;
+}
