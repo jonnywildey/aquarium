@@ -17,12 +17,12 @@ class Waveform {
     this.pauseState = "reset";
     this.startedAt = 0;
     this.trackPosition = 0;
+    this.playbackRate = 1.0;
     this._rafId = null;
     this._scrubProgress = null;
     this.onEnded = () => {};
     if (!this.isIos) {
-      this._setupFx();
-      this._setupControls();
+      this._setupFx().then(() => this._setupControls());
     } else {
       // Hide FX controls on iOS — Web Audio FX chain not used
       const fx = document.querySelector(".fx-section");
@@ -39,8 +39,9 @@ class Waveform {
     return new Ctx();
   }
 
-  _setupFx() {
+  async _setupFx() {
     const ctx = this.context;
+    await ctx.audioWorklet.addModule("delay-processor.js");
 
     // Volume + lowpass filter chain → output
     this.gainNode = ctx.createGain();
@@ -51,11 +52,12 @@ class Waveform {
     this.lopass.connect(this.gainNode);
     this.gainNode.connect(ctx.destination);
 
-    // Delay: send → lopass → delay → feedback → hipass → compressor → (loops) → output
+    // Delay: send → lopass → worklet delay → feedback → hipass → compressor → (loops) → output
     this.delaySend = ctx.createGain();
     this.delaySend.gain.value = 0;
-    this.delayLine = ctx.createDelay(1.5);
-    this.delayLine.delayTime.value = 0.35;
+    this.delayLine = new AudioWorkletNode(ctx, "delay-processor", {
+      outputChannelCount: [2],
+    });
     this.delayFeedback = ctx.createGain();
     this.delayFeedback.gain.value = 0.4;
     this.delayLopass = ctx.createBiquadFilter();
@@ -96,13 +98,53 @@ class Waveform {
       );
     });
     bind("delay-time", (e) => {
-      this.delayLine.delayTime.value = +e.target.value;
+      if (this.delayLine)
+        this.delayLine.parameters.get("delayTime").value = +e.target.value;
     });
     bind("delay-feedback", (e) => {
       this.delayFeedback.gain.value = +e.target.value;
     });
     bind("delay-send", (e) => {
       this.delaySend.gain.value = +e.target.value;
+    });
+    const speedEl = document.getElementById("speed");
+    if (speedEl) {
+      speedEl.value = 0;
+      speedEl.addEventListener("dblclick", () => {
+        speedEl.value = 0;
+        speedEl.dispatchEvent(new Event("input"));
+      });
+      // Tick mark at 1× (slider=0, dead centre of -1…+1 range)
+      const wrap = document.createElement("div");
+      wrap.style.position = "relative";
+      speedEl.parentNode.insertBefore(wrap, speedEl);
+      wrap.appendChild(speedEl);
+      const tick = document.createElement("div");
+      tick.setAttribute("aria-hidden", "true");
+      tick.style.cssText =
+        "position:absolute;left:50%;transform:translateX(-50%);bottom:-6px;width:2px;height:5px;background:rgba(255,255,255,0.4);border-radius:1px;pointer-events:none";
+      wrap.appendChild(tick);
+    }
+    // Slider range is -1…+1; playbackRate = 2^slider (log scale, 1× at centre)
+    bind("speed", (e) => {
+      let sliderVal = +e.target.value;
+      // Lock to 1x speed when near
+      if (Math.abs(sliderVal) < 0.12) {
+        sliderVal = 0;
+        e.target.value = 0;
+      }
+      const newRate = Math.pow(2, sliderVal);
+      if (this.pauseState === "playing" && this.source) {
+        this.trackPosition +=
+          (this.context.currentTime - this.startedAt) * this.playbackRate;
+        this.startedAt = this.context.currentTime;
+        this.source.playbackRate.setTargetAtTime(
+          newRate,
+          this.context.currentTime,
+          0.05,
+        );
+      }
+      this.playbackRate = newRate;
     });
   }
 
@@ -249,7 +291,8 @@ class Waveform {
     let dragStartProgress = 0;
     let wasPlaying = false;
 
-    const duration = () => this.isIos ? this.audioEl.duration : this.buffer.duration;
+    const duration = () =>
+      this.isIos ? this.audioEl.duration : this.buffer.duration;
 
     const getScale = () => {
       const obj = document.getElementById("svg-" + this.id);
@@ -265,7 +308,8 @@ class Waveform {
     };
 
     const commitSeek = () => {
-      const progress = this._scrubProgress !== null ? this._scrubProgress : dragStartProgress;
+      const progress =
+        this._scrubProgress !== null ? this._scrubProgress : dragStartProgress;
       this.trackPosition = progress * duration();
       this._scrubProgress = null;
       const resume = wasPlaying;
@@ -292,9 +336,16 @@ class Waveform {
     // ── Desktop mouse: grab the playback head ────────────────────────────────
     const onMouseMove = (e) => {
       if (!isDragging) return;
-      const p = Math.max(0, Math.min(1,
-        dragStartProgress - (e.clientX - dragStartX) / getScale() / this.imageInfo.playbackDistance,
-      ));
+      const p = Math.max(
+        0,
+        Math.min(
+          1,
+          dragStartProgress -
+            (e.clientX - dragStartX) /
+              getScale() /
+              this.imageInfo.playbackDistance,
+        ),
+      );
       applyProgress(p);
     };
 
@@ -330,29 +381,44 @@ class Waveform {
     let touchScrubbing = false;
 
     if (this._svgDoc) {
-      this._svgDoc.addEventListener("touchstart", (e) => {
-        if (this.pauseState === "loading") return;
-        touchOriginX = e.touches[0].clientX;
-        touchOriginY = e.touches[0].clientY;
-        touchScrubbing = false;
-      }, { passive: true });
+      this._svgDoc.addEventListener(
+        "touchstart",
+        (e) => {
+          if (this.pauseState === "loading") return;
+          touchOriginX = e.touches[0].clientX;
+          touchOriginY = e.touches[0].clientY;
+          touchScrubbing = false;
+        },
+        { passive: true },
+      );
 
-      this._svgDoc.addEventListener("touchmove", (e) => {
-        if (this.pauseState === "loading") return;
-        const dx = e.touches[0].clientX - touchOriginX;
-        const dy = e.touches[0].clientY - touchOriginY;
-        if (!touchScrubbing) {
-          // Require 8px movement before committing to a scrub
-          if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-          touchScrubbing = true;
-          startDrag(touchOriginX);
-        }
-        e.preventDefault();
-        const p = Math.max(0, Math.min(1,
-          dragStartProgress - (e.touches[0].clientX - dragStartX) / getScale() / this.imageInfo.playbackDistance,
-        ));
-        applyProgress(p);
-      }, { passive: false });
+      this._svgDoc.addEventListener(
+        "touchmove",
+        (e) => {
+          if (this.pauseState === "loading") return;
+          const dx = e.touches[0].clientX - touchOriginX;
+          const dy = e.touches[0].clientY - touchOriginY;
+          if (!touchScrubbing) {
+            // Require 8px movement before committing to a scrub
+            if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+            touchScrubbing = true;
+            startDrag(touchOriginX);
+          }
+          e.preventDefault();
+          const p = Math.max(
+            0,
+            Math.min(
+              1,
+              dragStartProgress -
+                (e.touches[0].clientX - dragStartX) /
+                  getScale() /
+                  this.imageInfo.playbackDistance,
+            ),
+          );
+          applyProgress(p);
+        },
+        { passive: false },
+      );
 
       this._svgDoc.addEventListener("touchend", () => {
         if (!isDragging) return;
@@ -389,6 +455,7 @@ class Waveform {
     }
     this.source = this.context.createBufferSource();
     this.source.buffer = this.buffer;
+    this.source.playbackRate.value = this.playbackRate;
     this.source.onended = () => this._onSourceEnded();
     this.source.connect(this.lopass);
     this.source.connect(this.delaySend);
@@ -410,7 +477,8 @@ class Waveform {
       return;
     }
     this.source.stop();
-    this.trackPosition += this.context.currentTime - this.startedAt;
+    this.trackPosition +=
+      (this.context.currentTime - this.startedAt) * this.playbackRate;
     this.pauseState = "paused";
     cancelAnimationFrame(this._rafId);
     this._rafId = null;
@@ -458,7 +526,8 @@ class Waveform {
       if (this.pauseState !== "playing") return;
       const elapsed = this.isIos
         ? this.audioEl.currentTime
-        : this.context.currentTime - this.startedAt + this.trackPosition;
+        : (this.context.currentTime - this.startedAt) * this.playbackRate +
+          this.trackPosition;
       const duration = this.isIos
         ? this.audioEl.duration
         : this.buffer.duration;
@@ -499,6 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tracks,
     links = [],
     artwork = "",
+    videos = [],
   } = window.albumConfig;
   const player = new Waveform("long");
 
@@ -583,6 +653,32 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="release-info-label">Credits</div>
       ${credits.map((line) => `<p class="credit-line">${line}</p>`).join("")}
     `;
+  }
+
+  // Videos section — injected before .fx-section
+  if (videos.length > 0) {
+    const videosEl = document.createElement("div");
+    videosEl.className = "release-videos";
+    const videosLabel = document.createElement("div");
+    videosLabel.className = "release-info-label";
+    videosLabel.textContent = "Videos";
+    videosEl.appendChild(videosLabel);
+    videos.forEach(({ title: vTitle, url }) => {
+      const a = document.createElement("a");
+      a.className = "stream-link";
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = vTitle;
+      videosEl.appendChild(a);
+    });
+    const fxSection = document.querySelector(".fx-section");
+    if (fxSection) {
+      fxSection.parentNode.insertBefore(videosEl, fxSection);
+    } else {
+      const artworkCol = document.querySelector(".artwork-column");
+      if (artworkCol) artworkCol.appendChild(videosEl);
+    }
   }
 
   // Background crossfade — fades between track-specific artwork when available
